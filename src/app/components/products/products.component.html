@@ -1,0 +1,131 @@
+<app-navbar></app-navbar>
+
+<!--Definir un boton que diga new producto-->
+<!--databs se agrego hata #exampleModal-->
+<div class="text-center">
+  <button class="btn btn-success m-3" data-bs-toggle="modal" data-bs-target="#exampleModal"> New product </button>
+</div>
+<hr>
+
+
+<!--Hordenamiento de los objetos (row y div)-->
+<!-- line 6 : Text center para hacer que el contenido quede de manera centrada -->
+<div class="row">
+  <div *ngFor="let product of products" class="card m-4 text-center" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">{{product.name}}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">{{product.category.name}}</h6>
+      <p class="card-text"> stock: {{product.stock}}.</p>
+      <p class="card-text">sales: {{product.sales}}</p>
+      <p class="card-text">Q: {{product.price}}</p>
+
+      <button class="btn btn-primary">Add to Shoopin card </button>
+<!--Actualizar paso 4 o 5 -->
+      <button (click)="getProduct(product._id)"  class="btn btn-primary m-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+        aria-controls="offcanvasExample">
+        Update
+      </button>
+      <button (click)="deleteProduct(product._id)" class="btn btn-danger">delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal save product-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <!-- 06/05/22 copiamos data-bs-dismiss="modal" paso 2-->
+      </div>
+      <div class="modal-body">
+
+        <!--06/05/22  Limpiar formulario paso 4 se agrego  #addProductFrom-->
+        <form #addProductForm="ngForm">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">name</label>
+            <input  [(ngModel)]="product.name" name="name" type="email" class="form-control" id="exampleInpmail1" aria-describedby="emailHelp">
+          </div>
+
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">categoria</label>
+            <select  class="form-select" aria-label="Default select example">
+              <option disabled>Open this select menu</option>
+              <option *ngFor="let category of categorys" value="{{category._id}}"> {{category.name}}</option>
+
+            </select>
+
+          </div>
+
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">stock</label>
+            <input [(ngModel)]="product.stock" name="stock"  type="text" class="form-control" id="exampleInputPassd3">
+          </div>
+
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">precio</label>
+            <input [(ngModel)]="product.price" name="price"  type="text" class="form-control" id="exampleInputPasswd4">
+             <!-- Actualizacion se agregaron en todos el ngModel  [(ngModel)]="productUpdate.price"  -->
+          </div>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button (click)="saveProduct(addProductForm)" type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save
+          changes</button> <!-- 06/05/22 copiamos u pegamos aqui paso3-->
+      </div>
+      <!--06/05/22  Limpiar formulario paso 6 pegar el   #addProductFrom-->
+    </div>
+  </div>
+</div>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Update</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>    
+  </div>
+  <div class="offcanvas-body">
+
+
+ <!--/*--------------------------------------------------------------------------------------------------------------------*/-->
+
+ <!-- Actualizar parte 8   <form *ngIf="productUpdate">-->
+    <form *ngIf="productUpdate">
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">name</label>
+        <input [(ngModel)]="productUpdate.name" name="name" type="email" class="form-control" id="exampleInputEma"
+          aria-describedby="emailHelp">
+      </div>
+
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">precio</label>
+        <input  [(ngModel)]="productUpdate.price" name="price" type="text" class="form-control" id="exampleInputPassword4">
+        <!-- Actualizar parte 9  [(ngModel)]="productUpdate.price" name="price"  -->
+      </div>
+
+
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">stock</label>
+        <input [(ngModel)]="productUpdate.stock" name="stock"  type="text" class="form-control" id="exampleInputPassw3">
+      </div>
+
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">categoria</label>
+        <select [(ngModel)]="productUpdate.category._id" name="category" class="form-select" aria-label="Default select example">
+          <option disabled>Open this select menu</option>
+          <option *ngFor="let category of categorys" value="{{category._id}}"> {{category.name}}</option>
+
+        </select>
+      </div>
+      <div class="text-center">
+        <button (click)="updateProduct()" class="btn btn-success mt-3" style="color:aliceblue" >Update</button>
+        <button class="btn btn-danger">delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
